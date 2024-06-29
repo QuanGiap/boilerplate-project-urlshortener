@@ -32,6 +32,7 @@ app.get('/', function(req, res) {
 // Your first API endpoint
 app.post('/api/shorturl', async function(req, res) {
   const {url=""} = req.body;
+  console.log(url);
   if(!url||!isValidUrl(url)) return res.json({ error: 'invalid url' });
   const urlCheck = await urlModel.findOne({url});
   if(urlCheck){
@@ -55,8 +56,8 @@ app.listen(port, function() {
 });
 function isValidUrl(string) {
   try {
-    new URL(string);
-    return true;
+    const newUrl = new URL(string);
+    return newUrl.protocol === 'http:' || newUrl.protocol === 'https:';
   } catch (err) {
     return false;
   }
